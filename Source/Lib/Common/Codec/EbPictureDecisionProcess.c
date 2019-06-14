@@ -3330,9 +3330,6 @@ void* picture_decision_kernel(void *input_ptr)
     uint32_t                           mini_gop_index;
     uint32_t                           pictureIndex;
 
-    // Initialization
-    uint32_t                           picture_width_in_sb;
-
     EbBool                          windowAvail, framePasseThru;
     uint32_t                           windowIndex;
     uint32_t                           entryIndex;

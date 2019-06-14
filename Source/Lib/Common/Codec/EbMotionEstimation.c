@@ -9318,7 +9318,7 @@ static void quarter_pel_refinemnet_block(
  * quarter_pel_refinement_sb
  *   performs Quarter Pel refinement
  *******************************************/
-static void quarter_pel_refinement_sb(
+void quarter_pel_refinement_sb(
     MeContext
         *context_ptr,  //[IN/OUT]  ME context Ptr, used to get/update ME results
     uint8_t *pos_full,     //[IN]

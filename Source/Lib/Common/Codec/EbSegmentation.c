@@ -140,7 +140,6 @@ void apply_segmentation_based_quantization(
 void setup_segmentation(
         PictureControlSet *picture_control_set_ptr,
         SequenceControlSet *sequence_control_set_ptr,
-        RateControlContext *context_ptr,
         RateControlLayerContext *rateControlLayerPtr,
         RateControlIntervalParamContext *rateControlParamPtr) {
     SegmentationParams *segmentation_params = &picture_control_set_ptr->parent_pcs_ptr->segmentation_params;
