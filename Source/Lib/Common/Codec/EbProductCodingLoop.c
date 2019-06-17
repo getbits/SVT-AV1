@@ -3610,7 +3610,6 @@ void perform_intra_tx_partitioning(
 #endif
                     picture_control_set_ptr,
                     candidateBuffer,
-                    context_ptr->cu_ptr,
                     txb_1d_offset,
                     0,
                     context_ptr->coeff_est_entropy_coder_ptr,
@@ -3781,7 +3780,6 @@ void perform_intra_tx_partitioning(
 #endif
                 picture_control_set_ptr,
                 candidateBuffer,
-                context_ptr->cu_ptr,
                 txb_1d_offset,
                 0,
                 context_ptr->coeff_est_entropy_coder_ptr,
@@ -4111,7 +4109,6 @@ void perform_intra_tx_partitioning(
 #endif
                 picture_control_set_ptr,
                 candidateBuffer,
-                context_ptr->cu_ptr,
                 txb_1d_offset,
                 0,
                 context_ptr->coeff_est_entropy_coder_ptr,
