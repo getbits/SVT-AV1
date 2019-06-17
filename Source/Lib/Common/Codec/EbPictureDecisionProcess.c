@@ -4165,6 +4165,7 @@ void* picture_decision_kernel(void *input_ptr)
                                 int num_past_pics = altref_nframes / 2;
                                 int num_future_pics = altref_nframes - num_past_pics - 1;
                                 ASSERT(num_future_pics >= 0);
+                                ASSERT((num_future_pics + num_past_pics) < (ALTREF_MAX_NFRAMES));
 
                                 //initilize list
                                 for (int pic_itr = 0; pic_itr < ALTREF_MAX_NFRAMES; pic_itr++)
@@ -4181,11 +4182,11 @@ void* picture_decision_kernel(void *input_ptr)
 
                                 int pic_i;
                                 //search reord-queue to get the future pictures
-                                for (pic_i = 0; pic_i < num_future_pics; pic_i++) {
+                                for (pic_i = num_past_pics + 1; pic_i < ALTREF_MAX_NFRAMES; pic_i++) {
                                     int32_t q_index = QUEUE_GET_NEXT_SPOT(picture_control_set_ptr->pic_decision_reorder_queue_idx, pic_i + 1);
                                     if (encode_context_ptr->picture_decision_reorder_queue[q_index]->parent_pcs_wrapper_ptr != NULL) {
                                         PictureParentControlSet* pcs_itr = (PictureParentControlSet *)encode_context_ptr->picture_decision_reorder_queue[q_index]->parent_pcs_wrapper_ptr->object_ptr;
-                                        picture_control_set_ptr->temp_filt_pcs_list[pic_i + num_past_pics + 1] = pcs_itr;
+                                        picture_control_set_ptr->temp_filt_pcs_list[pic_i] = pcs_itr;
                                     }
                                     else
                                         break;
@@ -4193,11 +4194,11 @@ void* picture_decision_kernel(void *input_ptr)
 
                                 //search in pre-ass if still short
                                 if (pic_i < num_future_pics) {
-                                    for (int pic_i_future = 0; pic_i_future < num_future_pics; pic_i_future++) {
+                                    for (int pic_i_future = num_past_pics + 1; pic_i_future < ALTREF_MAX_NFRAMES; pic_i_future++) {
                                         for (uint32_t pic_i_pa = 0; pic_i_pa < encode_context_ptr->pre_assignment_buffer_count; pic_i_pa++) {
                                             PictureParentControlSet* pcs_itr = (PictureParentControlSet*)encode_context_ptr->pre_assignment_buffer[pic_i_pa]->object_ptr;
                                             if (pcs_itr->picture_number == picture_control_set_ptr->picture_number + pic_i_future + 1) {
-                                                picture_control_set_ptr->temp_filt_pcs_list[pic_i_future + num_past_pics + 1] = pcs_itr;
+                                                picture_control_set_ptr->temp_filt_pcs_list[pic_i_future] = pcs_itr;
                                                 break; //exist the pre-ass loop, go search the next
                                             }
                                         }
@@ -4205,9 +4206,9 @@ void* picture_decision_kernel(void *input_ptr)
                                 }
 
                                 //get actual number of future pictures stored
-                                for(pic_i=0; pic_i<num_future_pics; pic_i++){
+                                for(pic_i = num_past_pics + 1; pic_i < ALTREF_MAX_NFRAMES; pic_i++){
 
-                                    if(picture_control_set_ptr->temp_filt_pcs_list[pic_i + num_past_pics + 1] != NULL)
+                                    if(picture_control_set_ptr->temp_filt_pcs_list[pic_i] != NULL)
                                         actual_future_pics++;
 
                                 }
